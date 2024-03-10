@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package forms;
-
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 import java.sql.Connection;

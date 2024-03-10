@@ -3,10 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package forms;
-import cell.CellEditor;
-import cell.TableActionCellRender;
-import static forms.revenue.revenue_table;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,8 +20,7 @@ import javax.swing.table.TableRowSorter;
  * @author Jake Marson Nable
  */
 public class complete extends javax.swing.JPanel {
-    
-    
+   
 private static final String username = "root" ;
     private static final String password = "1234" ;
     private static final String dataconn = "jdbc:mysql://127.0.0.1:3306/workjob" ; 
@@ -42,9 +37,6 @@ private static final String username = "root" ;
      */
     public complete() {
         initComponents();
-           
-        
-        
         
     }
  public void UpdateDb () {
@@ -247,8 +239,5 @@ private static final String username = "root" ;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTextField search_complete;
     // End of variables declaration//GEN-END:variables
-
-   
-
 
 }

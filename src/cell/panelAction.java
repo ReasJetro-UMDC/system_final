@@ -129,7 +129,7 @@ public class panelAction extends javax.swing.JPanel {
  
     DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
     int selectedRows = pending_table.getSelectedRow();
-    
+ 
     try {
         id = Integer.parseInt(recordTable.getValueAt(selectedRows, 0).toString());
         

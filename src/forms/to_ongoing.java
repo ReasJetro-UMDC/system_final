@@ -48,9 +48,7 @@ public class to_ongoing extends javax.swing.JFrame {
             Vector columnData = new Vector();
             
             for ( i = 1; i < q; i++)
-            
              {  
-                
                  columnData.add(rs.getString("ongoing_checkin"));
                  columnData.add(rs.getString("ongoing_time"));
                  columnData.add(rs.getString("ongoing_name"));

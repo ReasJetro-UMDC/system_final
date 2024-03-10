@@ -170,35 +170,30 @@ public void UpdateDb3 () {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
       try {
-    // Load the JDBC driver
+  
     Class.forName("com.mysql.cj.jdbc.Driver");
 
-    // Establish a connection to the database
+  
      sql2 = DriverManager.getConnection(dataconn, username, password);
 
-    // Prepare the SQL statement for insertion
+   
      pst4 = sql2.prepareStatement("INSERT INTO revenue (date_revenue, customer_revenue, total_revenue) VALUES (?, ?, ?)");
 
-    // Get the input values from text fields
+   
     String date_revenue = date_rev.getText();
     String customer_revenue = customer_rev.getText();
     String total_revenue = total_rev.getText();
 
-    // Check if any of the input fields are empty
+   
     if (date_revenue.isEmpty() || customer_revenue.isEmpty() || total_revenue.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
-
-    // Set parameters for the prepared statement
     pst4.setString(1, date_revenue);
     pst4.setString(2, customer_revenue);
     pst4.setString(3, total_revenue);
-
-    // Execute the SQL statement to insert the record
     int rowsAffected = pst4.executeUpdate();
 
-    // Check if the insertion was successful
     if (rowsAffected > 0) {
         JOptionPane.showMessageDialog(this, "Record Added");
         UpdateDb3();
@@ -207,15 +202,15 @@ public void UpdateDb3 () {
         JOptionPane.showMessageDialog(this, "Failed to insert record", "Error", JOptionPane.ERROR_MESSAGE);
     }
 } catch (ClassNotFoundException ex) {
-    // Handle ClassNotFoundException
+    
     JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace(); // Print the stack trace for further debugging
+    ex.printStackTrace(); 
 } catch (SQLException ex) {
-    // Handle SQLException
+   
     JOptionPane.showMessageDialog(this, "Error inserting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace(); // Print the stack trace for further debugging
+    ex.printStackTrace(); 
 } catch (Exception ex) {
-    // Handle other exceptions
+    
     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
     ex.printStackTrace(); // Print the stack trace for further debugging
 }

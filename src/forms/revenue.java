@@ -49,7 +49,6 @@ private static final String username = "root" ;
             Vector columnData = new Vector();
             
             for ( i = 1; i < q; i++)
-            
              {  
                 
                  columnData.add(rs.getString("date_revenue"));

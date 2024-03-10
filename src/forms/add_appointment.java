@@ -65,7 +65,6 @@ public class add_appointment extends javax.swing.JFrame {
                 Vector<Object> columnData2 = new Vector<>();
                 Vector<Object> columnData3 = new Vector<>();
 
-               
                 columnData1.add(rs.getString("check_in"));
                 columnData1.add(rs.getString("Time"));
                 columnData1.add(rs.getString("Customer_name"));
@@ -74,7 +73,6 @@ public class add_appointment extends javax.swing.JFrame {
                 columnData1.add(rs.getString("Employee_Assigned"));
                 RecordTable1.addRow(columnData1);
 
-               
                 columnData2.add(rs.getString("check_in"));
                 columnData2.add(rs.getString("Time"));
                 columnData2.add(rs.getString("Customer_name"));
@@ -83,7 +81,6 @@ public class add_appointment extends javax.swing.JFrame {
                 columnData2.add(rs.getString("Employee_Assigned"));
                 RecordTable2.addRow(columnData2);
 
-                
                 columnData3.add(rs.getString("check_in"));
                 columnData3.add(rs.getString("Time"));
                 columnData3.add(rs.getString("Customer_name"));
@@ -215,7 +212,7 @@ public class add_appointment extends javax.swing.JFrame {
 } catch (ClassNotFoundException ex) { 
             
     JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
-} catch (SQLException ex) { // Log the exception
+} catch (SQLException ex) { 
             
     JOptionPane.showMessageDialog(this, "Error inserting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 }

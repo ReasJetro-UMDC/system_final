@@ -224,8 +224,8 @@ public void UpdateDb1 () {
 
             if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
 
-                JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+            JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
             }
    
             pst1.setString(1, name);

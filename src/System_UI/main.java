@@ -26,7 +26,6 @@ public class main extends javax.swing.JFrame {
         form_frames.setLayout(new BorderLayout());
         
     }
-    
     private void forms(Component com){
         
         

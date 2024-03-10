@@ -24,12 +24,8 @@ public class appointment extends javax.swing.JPanel {
     public appointment() {
         initComponents();
    
-       
         pending_table.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRender());
         pending_table.getColumnModel().getColumn(6).setCellEditor(new CellEditor());
-        
-       
-        
 
     }
     
@@ -411,7 +407,6 @@ public class appointment extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, e);
     }
 
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 public static void AddRowToJTable(Object[]dataRow) {
     DefaultTableModel model = (DefaultTableModel)pending_table.getModel();
