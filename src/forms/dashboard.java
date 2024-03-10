@@ -81,7 +81,6 @@ public class dashboard extends javax.swing.JPanel {
             for (int i = 1; i <= columnCount; i++) {
                 rowData.add(rs.getString(i)); 
             }
-
             recordTable.addRow(rowData);
         }
     } catch (Exception e) {
