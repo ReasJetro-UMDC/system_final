@@ -35,7 +35,7 @@ public class panelAction extends javax.swing.JPanel {
     Connection sql = null;
     PreparedStatement pst  = null;
     ResultSet rs = null;
-    int i, q, id;
+    int i, q, id, deleteitem;
     
   /**
      * Creates new form panelAction
@@ -49,14 +49,25 @@ public class panelAction extends javax.swing.JPanel {
         sql = DriverManager.getConnection(dataconn, username, password);
         pst = sql.prepareStatement("SELECT * FROM workjob");
         rs = pst.executeQuery();
-        DefaultTableModel RecordTable = (DefaultTableModel) pending_table.getModel();
-        RecordTable.setRowCount(0);
+        
         ResultSetMetaData stdata = rs.getMetaData();
+        
         q = stdata.getColumnCount();
+        
+         DefaultTableModel RecordTable = (DefaultTableModel) pending_table.getModel();
+         RecordTable.setRowCount(0);
+         
         while (rs.next()) {
+            
             Vector<String> columnData = new Vector<>();
             for ( i = 1; i <= q; i++) { 
-                columnData.add(rs.getString(i)); 
+                columnData.add(rs.getString("id"));
+                columnData.add(rs.getString("check_in"));
+                columnData.add(rs.getString("Time"));
+                columnData.add(rs.getString("Customer_name"));
+                columnData.add(rs.getString("Service_rendered"));
+                columnData.add(rs.getString("Price"));
+                columnData.add(rs.getString("Employee_Assigned"));
             }
             RecordTable.addRow(columnData);
         }
@@ -115,52 +126,33 @@ public class panelAction extends javax.swing.JPanel {
 
     private void TAB_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAB_deleteActionPerformed
 
- try {
+ 
     DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
-    int selectedRow = pending_table.getSelectedRow();
+    int selectedRows = pending_table.getSelectedRow();
     
-    if (selectedRow != -1) { 
-        String idString = recordTable.getValueAt(selectedRow, 0).toString();
+    try {
+        id = Integer.parseInt(recordTable.getValueAt(selectedRows, 0).toString());
         
-        try {
-            // Establish database connection
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection sql = DriverManager.getConnection(dataconn, username, password);
-                 PreparedStatement pst = sql.prepareStatement("DELETE FROM workjob WHERE id = ?")) {
-                
-                // Set the ID parameter for the prepared statement
-                pst.setString(1, idString);
-                
-                // Execute the delete query
-                int rowsAffected = pst.executeUpdate();
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "Record Deleted");
-                    // Remove the row from the table model
-                    recordTable.removeRow(selectedRow);
-                } else {
-                    JOptionPane.showMessageDialog(this, "No record was deleted.", "Warning", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, "Error loading MySQL JDBC driver", "ERROR", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "SQL Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
+        deleteitem = JOptionPane.showConfirmDialog(null, "Confirm if you want to delete item", "warning",JOptionPane.YES_NO_OPTION);
+        if (deleteitem == JOptionPane.YES_OPTION) {
+            
+           Class.forName("com.mysql.cj.jdbc.Driver");
+        sql = DriverManager.getConnection(dataconn, username, password); 
+        pst = sql.prepareStatement("delete from workjob where id =? ");
+        
+        pst.setInt(1, id);
+        pst.executeUpdate();
+        JOptionPane.showMessageDialog(this, "record deleted");
+        UpdateDb();
+        
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Please select a row to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
+        
     }
-} catch (Exception ex) {
+   
+ catch (Exception ex) {
     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
     ex.printStackTrace();
 }
-
-
-
-
-
-
     }//GEN-LAST:event_TAB_deleteActionPerformed
 
     private void TAB_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAB_editActionPerformed
