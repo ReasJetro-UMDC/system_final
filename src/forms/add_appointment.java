@@ -139,13 +139,14 @@ public class add_appointment extends javax.swing.JFrame {
         jLabel4.setText("Service Rendered");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, -1, -1));
 
-        done.setText("Done");
+        done.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        done.setText("DONE");
         done.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doneActionPerformed(evt);
             }
         });
-        jPanel1.add(done, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
+        jPanel1.add(done, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, -1, -1));
 
         txtprice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
