@@ -5,15 +5,19 @@
 package forms;
 import cell.CellEditor;
 import cell.TableActionCellRender;
+import static forms.revenue.revenue_table;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.Vector;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 /**
  *
@@ -31,21 +35,16 @@ private static final String username = "root" ;
     ResultSet rs = null;
     int q, i;
     
-    
     DefaultTableModel model;
- 
-
-    
 
     /**
      * Creates new form complete
      */
     public complete() {
         initComponents();
-           completed_table.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRender());
-        completed_table.getColumnModel().getColumn(6).setCellEditor(new CellEditor());
+           
         
-        //ongoing table action buttons
+        
         
     }
  public void UpdateDb () {
@@ -102,6 +101,7 @@ private static final String username = "root" ;
         completed_table = new javax.swing.JTable();
         search_complete = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setPreferredSize(new java.awt.Dimension(940, 610));
@@ -113,7 +113,7 @@ private static final String username = "root" ;
 
             },
             new String [] {
-                "Check In", "Time", "Name", "Works", "Emplooyee Assigned", "Price", "Action"
+                "Check In", "Time", "Name", "Works", "Price", "Employee Assigned"
             }
         ));
         completed_table.setRowHeight(40);
@@ -140,6 +140,14 @@ private static final String username = "root" ;
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("COMPLETE");
 
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setText("ADD TO REVENUE");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -147,7 +155,10 @@ private static final String username = "root" ;
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(search_complete, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(search_complete, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -161,7 +172,9 @@ private static final String username = "root" ;
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(search_complete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(search_complete, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(7, Short.MAX_VALUE))
@@ -199,9 +212,36 @@ private static final String username = "root" ;
         search(searchString);        // TODO add your handling code here:
     }//GEN-LAST:event_search_completeKeyReleased
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ try {
+         int index = completed_table.getSelectedRow();
+          TableModel model = completed_table.getModel();
+          
+          String date = model.getValueAt(index, 0).toString();
+          String customer = model.getValueAt(index,2).toString();
+          String total = model.getValueAt(index, 4).toString();
+          
+           
+        to_revenue revenuetb = new to_revenue();
+        revenuetb.setVisible(true);
+        revenuetb.pack();
+        revenuetb.setLocationRelativeTo(revenuetb);
+        revenuetb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        revenuetb.date_rev.setText(date);
+        revenuetb.customer_rev.setText(customer);
+        revenuetb.total_rev.setText(total);
+        
+        
+        } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTable completed_table;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     public static javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

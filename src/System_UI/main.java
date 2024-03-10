@@ -25,7 +25,6 @@ public class main extends javax.swing.JFrame {
         revenue = new revenue();
         form_frames.setLayout(new BorderLayout());
         
-        
     }
     
     private void forms(Component com){
@@ -266,15 +265,7 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_close_buttonActionPerformed
 
     public static void main(String args[]) {
-       
-        
-        
-        
-        
-        
-        
-        
-        
+      
         FlatLightLaf.setup();
         
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -18,31 +18,18 @@ import static forms.to_ongoing.txtprice2;
 import static forms.to_ongoing.txtsr2;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
-import static forms.to_complete.txtCheckin3;
-import static forms.to_complete.txtTime3;
-import static forms.to_complete.txtcstname3;
-import static forms.to_complete.txtea3;
-import static forms.to_complete.txtprice3;
-import static forms.to_complete.txtsr3;
-
 
 public class appointment extends javax.swing.JPanel {
-
-
-    
-   
-    
+  
     public appointment() {
         initComponents();
-
-        
-        //pending table action buttons
+   
+       
         pending_table.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRender());
         pending_table.getColumnModel().getColumn(6).setCellEditor(new CellEditor());
         
-        //ongoing table action buttons
-        ongoing_table.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRender());
-        ongoing_table.getColumnModel().getColumn(6).setCellEditor(new CellEditor());
+       
+        
 
     }
     
@@ -145,7 +132,7 @@ public class appointment extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Checked in", "Time", "Customer Name", "Service Rendered", "Price", "Employee Assigned", "Action"
+                "Checked in", "Time", "Customer Name", "Service Rendered", "Price", "Employee Assigned"
             }
         ));
         ongoing_table.setRowHeight(40);
@@ -302,21 +289,20 @@ public class appointment extends javax.swing.JPanel {
     }//GEN-LAST:event_add_buttonActionPerformed
 
     private void pending_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pending_tableMouseClicked
-        // TODO add your handling code here:
+
        try {
     DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
     int selectedRow = pending_table.getSelectedRow();
 
-    if (selectedRow != -1 && selectedRow < recordTable.getRowCount()) { // Check if a row is selected and within bounds
-        // Retrieve data from the selected row
-        Object checkinValue = recordTable.getValueAt(selectedRow, 0); // Assuming the index of check-in is 0
-        Object timeValue = recordTable.getValueAt(selectedRow, 1); // Assuming the index of time is 1
-        Object cstnameValue = recordTable.getValueAt(selectedRow, 2); // Assuming the index of customer name is 2
-        Object srValue = recordTable.getValueAt(selectedRow, 3); // Assuming the index of service rendered is 3
-        Object priceValue = recordTable.getValueAt(selectedRow, 4); // Assuming the index of price is 4
-        Object eaValue = recordTable.getValueAt(selectedRow, 5); // Assuming the index of employee assigned is 5
+    if (selectedRow != -1 && selectedRow < recordTable.getRowCount()) { 
+        
+        Object checkinValue = recordTable.getValueAt(selectedRow, 0); 
+        Object timeValue = recordTable.getValueAt(selectedRow, 1); 
+        Object cstnameValue = recordTable.getValueAt(selectedRow, 2); 
+        Object srValue = recordTable.getValueAt(selectedRow, 3); 
+        Object priceValue = recordTable.getValueAt(selectedRow, 4); 
+        Object eaValue = recordTable.getValueAt(selectedRow, 5); 
 
-        // Populate text fields with retrieved data
         txtCheckin2.setText(checkinValue != null ? checkinValue.toString() : "");
         txtTime2.setText(timeValue != null ? timeValue.toString() : "");
         txtcstname2.setText(cstnameValue != null ? cstnameValue.toString() : "");
@@ -328,32 +314,25 @@ public class appointment extends javax.swing.JPanel {
     }
 } catch (Exception ex) {
     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace(); // Print stack trace for debugging
-}
-
-
-
-
-
-           
+    ex.printStackTrace(); 
+}         
     }//GEN-LAST:event_pending_tableMouseClicked
 
     private void ongoing_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ongoing_tableMouseClicked
-        // TODO add your handling code here:
+        
           try {
     DefaultTableModel recordTable = (DefaultTableModel) ongoing_table.getModel();
     int selectedRow = ongoing_table.getSelectedRow();
 
-    if (selectedRow != -1 && selectedRow < recordTable.getRowCount()) { // Check if a row is selected and within bounds
-        // Retrieve data from the selected row
-        Object checkinValue = recordTable.getValueAt(selectedRow, 1);
-        Object timeValue = recordTable.getValueAt(selectedRow, 2);
-        Object cstnameValue = recordTable.getValueAt(selectedRow, 3);
-        Object srValue = recordTable.getValueAt(selectedRow, 4);
-        Object priceValue = recordTable.getValueAt(selectedRow, 5);
-        Object eaValue = recordTable.getValueAt(selectedRow, 6);
+    if (selectedRow != -1 && selectedRow < recordTable.getRowCount()) {
+       
+        Object checkinValue = recordTable.getValueAt(selectedRow, 0);
+        Object timeValue = recordTable.getValueAt(selectedRow, 1);
+        Object cstnameValue = recordTable.getValueAt(selectedRow, 2);
+        Object srValue = recordTable.getValueAt(selectedRow, 3);
+        Object priceValue = recordTable.getValueAt(selectedRow, 4);
+        Object eaValue = recordTable.getValueAt(selectedRow, 5);
 
-        // Populate text fields with retrieved data
         txtCheckin2.setText(checkinValue != null ? checkinValue.toString() : "");
         txtTime2.setText(timeValue != null ? timeValue.toString() : "");
         txtcstname2.setText(cstnameValue != null ? cstnameValue.toString() : "");
@@ -365,13 +344,13 @@ public class appointment extends javax.swing.JPanel {
     }
 } catch (Exception ex) {
     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace(); // Print stack trace for debugging
+    ex.printStackTrace();
 }
         
     }//GEN-LAST:event_ongoing_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       
         try {
          int index = pending_table.getSelectedRow();
           TableModel model = pending_table.getModel();
@@ -403,12 +382,11 @@ public class appointment extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       
           try {
          int index = ongoing_table.getSelectedRow();
           TableModel model = ongoing_table.getModel();
-          
-          
+                 
           String check_in = model.getValueAt(index, 0).toString();
           String time = model.getValueAt(index,1).toString();
           String customerN = model.getValueAt(index, 2).toString();
@@ -428,8 +406,7 @@ public class appointment extends javax.swing.JPanel {
         ongoingtb.txtsr3.setText(SR);
         ongoingtb.txtprice3.setText(Price);
         ongoingtb.txtea3.setText(EA);
-        
-        
+           
         } catch (Exception e) {
         JOptionPane.showMessageDialog(null, e);
     }
@@ -439,8 +416,7 @@ public class appointment extends javax.swing.JPanel {
 public static void AddRowToJTable(Object[]dataRow) {
     DefaultTableModel model = (DefaultTableModel)pending_table.getModel();
     model.addRow(dataRow);
-    
-    
+       
 }
 public static void AddRowToJTable2(Object[]dataRow) {
     DefaultTableModel model2 = (DefaultTableModel)ongoing_table.getModel();

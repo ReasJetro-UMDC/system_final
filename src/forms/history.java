@@ -30,8 +30,6 @@ private static final String username = "root" ;
    
     int p,r;
      
-    
-    
     DefaultTableModel model;
     /**
      * Creates new form history

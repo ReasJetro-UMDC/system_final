@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -42,7 +41,7 @@ public class dashboard extends javax.swing.JPanel {
         ResultSet rs = pst.executeQuery();
 
         DefaultTableModel recordTable = (DefaultTableModel) pending_table1.getModel();
-        recordTable.setRowCount(0); // Clear existing rows before adding new ones
+        recordTable.setRowCount(0); 
 
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -50,20 +49,18 @@ public class dashboard extends javax.swing.JPanel {
         while (rs.next()) {
             Vector<Object> rowData = new Vector<>();
 
-            // Iterate through each column and add its value to the row data
+           
             for (int i = 1; i <= columnCount; i++) {
-                rowData.add(rs.getObject(i)); // Add column value to row data
+                rowData.add(rs.getObject(i)); 
             }
 
-            // Add the row data to the table model
             recordTable.addRow(rowData);
         }
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
-
-    
+  
     public void UpdateDb1() {
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -72,7 +69,7 @@ public class dashboard extends javax.swing.JPanel {
         rs = pst1.executeQuery();
 
         DefaultTableModel recordTable = (DefaultTableModel) ongoing_table1.getModel();
-        recordTable.setRowCount(0); // Clear existing rows before adding new ones
+        recordTable.setRowCount(0); 
 
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -80,18 +77,17 @@ public class dashboard extends javax.swing.JPanel {
         while (rs.next()) {
             Vector rowData = new Vector();
 
-            // Iterate through each column and add its value to the row data
+           
             for (int i = 1; i <= columnCount; i++) {
-                rowData.add(rs.getString(i)); // Add column value to row data
+                rowData.add(rs.getString(i)); 
             }
 
-            // Add the row data to the table model
             recordTable.addRow(rowData);
         }
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     } finally {
-        // Close resources in finally block
+        
         try {
             if (rs != null) rs.close();
             if (pst1 != null) pst1.close();

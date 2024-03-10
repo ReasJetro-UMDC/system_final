@@ -162,7 +162,7 @@ public void UpdateDb1 () {
                 doneActionPerformed(evt);
             }
         });
-        jPanel1.add(done, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
+        jPanel1.add(done, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, -1, -1));
 
         txtprice3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -227,9 +227,7 @@ public void UpdateDb1 () {
                 JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            
-           
+   
             pst1.setString(1, name);
             pst1.setString(2, work);
             pst1.setString(3, assignedEmployee);
@@ -243,9 +241,7 @@ public void UpdateDb1 () {
             pst.setString(4, serviceRendered);
             pst.setString(5, price);
             pst.setString(6, employee);
-                
-           
-            
+
             pst.executeUpdate();
             pst1.executeUpdate();
          
@@ -253,15 +249,14 @@ public void UpdateDb1 () {
             
             UpdateDb1();
             UpdateDb();
-            
-    
+
             dispose();
 
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace(); // Log the exception
+            ex.printStackTrace(); 
             JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
-            ex.printStackTrace(); // Log the exception
+            ex.printStackTrace(); 
             JOptionPane.showMessageDialog(this, "Error inserting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_doneActionPerformed

@@ -22,12 +22,7 @@ public class to_ongoing extends javax.swing.JFrame {
 
     private static final String username = "root" ;
     private static final String password = "1234" ;
-    private static final String dataconn = "jdbc:mysql://127.0.0.1:3306/workjob" ; 
-
-   
-
-   
-   
+    private static final String dataconn = "jdbc:mysql://127.0.0.1:3306/workjob" ;
     
     Connection sql = null;
     PreparedStatement pst  = null;
@@ -158,11 +153,11 @@ public class to_ongoing extends javax.swing.JFrame {
     }//GEN-LAST:event_txtcstname2ActionPerformed
 
     private void doneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneActionPerformed
-     try {
+    
+        try {
     Class.forName("com.mysql.cj.jdbc.Driver");
     Connection sql = DriverManager.getConnection(dataconn, username, password);
     PreparedStatement pst = sql.prepareStatement("INSERT INTO ongoing_table (ongoing_checkin, ongoing_time, ongoing_name, ongoing_sr,ongoing_price,ongoing_employee) VALUES (?,?,?,?,?,?) ");
-    
     
     String name = txtCheckin2.getText();
     String work = txtTime2.getText();
@@ -170,10 +165,7 @@ public class to_ongoing extends javax.swing.JFrame {
     String serviceRendered = txtsr2.getText();
     String price = txtprice2.getText();
     String employee = txtea2.getText();
-    
-    
-    
-   
+
     if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
        
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
@@ -189,14 +181,15 @@ public class to_ongoing extends javax.swing.JFrame {
     
     pst.executeUpdate();
     JOptionPane.showMessageDialog(this, "Record Added");
+    
     UpdateDb();
-          dispose();
+    dispose();
           
 } catch (ClassNotFoundException ex) {
-    ex.printStackTrace(); // Log the exception
+    ex.printStackTrace(); 
     JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
 } catch (SQLException ex) {
-    ex.printStackTrace(); // Log the exception
+    ex.printStackTrace(); 
     JOptionPane.showMessageDialog(this, "Error inserting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 }  
     }//GEN-LAST:event_doneActionPerformed

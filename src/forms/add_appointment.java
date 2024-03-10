@@ -7,14 +7,19 @@ package forms;
 import static forms.appointment.pending_table;
 import static forms.dashboard.ongoing_table1;
 import static forms.dashboard.pending_table1;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,20 +31,18 @@ public class add_appointment extends javax.swing.JFrame {
     private static final String username = "root" ;
     private static final String password = "1234" ;
     private static final String dataconn = "jdbc:mysql://127.0.0.1:3306/workjob" ; 
-
    
-   
-    
     Connection sql = null;
     PreparedStatement pst  = null;
     ResultSet rs = null;
     int q, i;
    
-   
      DefaultTableModel model;
    
     public add_appointment() {
         initComponents();
+         time();
+        date();
     }
     public void UpdateDb() {
         try {
@@ -62,7 +65,7 @@ public class add_appointment extends javax.swing.JFrame {
                 Vector<Object> columnData2 = new Vector<>();
                 Vector<Object> columnData3 = new Vector<>();
 
-                // Add data to the first table
+               
                 columnData1.add(rs.getString("check_in"));
                 columnData1.add(rs.getString("Time"));
                 columnData1.add(rs.getString("Customer_name"));
@@ -71,7 +74,7 @@ public class add_appointment extends javax.swing.JFrame {
                 columnData1.add(rs.getString("Employee_Assigned"));
                 RecordTable1.addRow(columnData1);
 
-                // Add data to the second table
+               
                 columnData2.add(rs.getString("check_in"));
                 columnData2.add(rs.getString("Time"));
                 columnData2.add(rs.getString("Customer_name"));
@@ -80,7 +83,7 @@ public class add_appointment extends javax.swing.JFrame {
                 columnData2.add(rs.getString("Employee_Assigned"));
                 RecordTable2.addRow(columnData2);
 
-                // Add data to the third table
+                
                 columnData3.add(rs.getString("check_in"));
                 columnData3.add(rs.getString("Time"));
                 columnData3.add(rs.getString("Customer_name"));
@@ -94,8 +97,6 @@ public class add_appointment extends javax.swing.JFrame {
         }
     }
     
-    
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -181,20 +182,16 @@ public class add_appointment extends javax.swing.JFrame {
     private void doneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneActionPerformed
         try {
     Class.forName("com.mysql.cj.jdbc.Driver");
-    Connection sql = DriverManager.getConnection(dataconn, username, password);
-    PreparedStatement pst = sql.prepareStatement("INSERT INTO workjob (check_in, Time, Customer_name, Service_rendered,Price,Employee_Assigned) VALUES (?,?,?,?,?,?) ");
-    
-    
+     sql = DriverManager.getConnection(dataconn, username, password);
+     pst = sql.prepareStatement("INSERT INTO workjob (check_in, Time, Customer_name, Service_rendered,Price,Employee_Assigned) VALUES (?,?,?,?,?,?) ");
+      
     String name = txtCheckin.getText();
     String work = txtTime.getText();
     String assignedEmployee = txtcstname.getText();
     String serviceRendered = txtsr.getText();
     String price = txtprice.getText();
     String employee = txtea.getText();
-    
-    
-    
-    
+     
     if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
        
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
@@ -215,20 +212,40 @@ public class add_appointment extends javax.swing.JFrame {
     
     dispose();
           
-} catch (ClassNotFoundException ex) { // Log the exception
-            // Log the exception
+} catch (ClassNotFoundException ex) { 
+            
     JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
 } catch (SQLException ex) { // Log the exception
-            // Log the exception
+            
     JOptionPane.showMessageDialog(this, "Error inserting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 }
-
-        
-        
-        
-    
     }//GEN-LAST:event_doneActionPerformed
-
+ // for time
+    Timer t;
+    SimpleDateFormat st;    
+    public void time() {
+        
+        t = new Timer(0,new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date dt = new Date();
+                st = new SimpleDateFormat("hh:mm a");
+                
+                String tt = st.format(dt);
+                txtTime.setText(tt);
+            }
+        });
+        t.start(); 
+    }
+    
+    //for date
+    public void date(){
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, YYYY");
+        
+        String dd = sdf.format(d);
+        txtCheckin.setText(dd);
+    }
     private void txtcstnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcstnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtcstnameActionPerformed
@@ -236,8 +253,7 @@ public class add_appointment extends javax.swing.JFrame {
     private void txtpriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpriceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtpriceActionPerformed
-    
-   
+  
     /**
      * @param args the command line arguments
      */
@@ -264,9 +280,7 @@ public class add_appointment extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(add_appointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton done;
     private javax.swing.JLabel jLabel1;
