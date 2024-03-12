@@ -146,7 +146,7 @@ public class add_appointment extends javax.swing.JFrame {
                 doneActionPerformed(evt);
             }
         });
-        jPanel1.add(done, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, -1, -1));
+        jPanel1.add(done, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
 
         txtprice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
