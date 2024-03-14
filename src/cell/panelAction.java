@@ -127,11 +127,13 @@ public class panelAction extends javax.swing.JPanel {
     private void TAB_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAB_deleteActionPerformed
 
  
-    DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
+    DefaultTableModel recordTable = (DefaultTableModel)pending_table.getModel();
     int selectedRows = pending_table.getSelectedRow();
  
     try {
+       
         id = Integer.parseInt(recordTable.getValueAt(selectedRows, 0).toString());
+
         
         deleteitem = JOptionPane.showConfirmDialog(null, "Confirm if you want to delete item", "warning",JOptionPane.YES_NO_OPTION);
         if (deleteitem == JOptionPane.YES_OPTION) {
@@ -144,15 +146,25 @@ public class panelAction extends javax.swing.JPanel {
         pst.executeUpdate();
         JOptionPane.showMessageDialog(this, "record deleted");
         UpdateDb();
+        txtCheckin.setText("");
+        txtTime.setText("");
+        txtcstname.setText("");
+        txtsr.setText("");
+        txtprice.setText("");
+        txtea.setText("");
+        txtprice.requestFocus();
         
         }
         
     }
-   
+   catch (ClassNotFoundException ex) {
+       java.util.logging.Logger.getLogger(panelAction.class.getName()).log(java.util.logging.Level.SEVERE,null,ex);
+   }
  catch (Exception ex) {
     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
     ex.printStackTrace();
 }
+
     }//GEN-LAST:event_TAB_deleteActionPerformed
 
     private void TAB_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAB_editActionPerformed

@@ -289,28 +289,17 @@ public class appointment extends javax.swing.JPanel {
        try {
     DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
     int selectedRow = pending_table.getSelectedRow();
-
-    if (selectedRow != -1 && selectedRow < recordTable.getRowCount()) { 
+    
+        txtCheckin2.setText(recordTable.getValueAt(selectedRow, 1).toString());
+        txtTime2.setText(recordTable.getValueAt(selectedRow, 1).toString());
+        txtcstname2.setText(recordTable.getValueAt(selectedRow, 1).toString());
+        txtsr2.setText(recordTable.getValueAt(selectedRow, 1).toString());
+        txtprice2.setText(recordTable.getValueAt(selectedRow, 1).toString());
+        txtea2.setText(recordTable.getValueAt(selectedRow, 1).toString());
         
-        Object checkinValue = recordTable.getValueAt(selectedRow, 0); 
-        Object timeValue = recordTable.getValueAt(selectedRow, 1); 
-        Object cstnameValue = recordTable.getValueAt(selectedRow, 2); 
-        Object srValue = recordTable.getValueAt(selectedRow, 3); 
-        Object priceValue = recordTable.getValueAt(selectedRow, 4); 
-        Object eaValue = recordTable.getValueAt(selectedRow, 5); 
-
-        txtCheckin2.setText(checkinValue != null ? checkinValue.toString() : "");
-        txtTime2.setText(timeValue != null ? timeValue.toString() : "");
-        txtcstname2.setText(cstnameValue != null ? cstnameValue.toString() : "");
-        txtsr2.setText(srValue != null ? srValue.toString() : "");
-        txtprice2.setText(priceValue != null ? priceValue.toString() : "");
-        txtea2.setText(eaValue != null ? eaValue.toString() : "");
-    } else {
-        JOptionPane.showMessageDialog(this, "Please select a valid row.", "Warning", JOptionPane.WARNING_MESSAGE);
-    }
+    
 } catch (Exception ex) {
     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace(); 
 }         
     }//GEN-LAST:event_pending_tableMouseClicked
 
