@@ -10,18 +10,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.DriverManager;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import static forms.add_appointment.txtCheckin;
-import static forms.add_appointment.txtTime;
-import static forms.add_appointment.txtcstname;
-import static forms.add_appointment.txtsr;
-import static forms.add_appointment.txtprice;
-import static forms.add_appointment.txtea;
 /**
  *
  * @author Jake Marson Nable
@@ -164,8 +157,6 @@ try {
     }//GEN-LAST:event_TAB_deleteActionPerformed
 
     private void TAB_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAB_editActionPerformed
-       
-   // Define a method to update the pending_table
 
     try {
     Class.forName("com.mysql.cj.jdbc.Driver");
@@ -173,18 +164,16 @@ try {
     
     DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
     int rowCount = model.getRowCount();
-    
-    // Iterate over each row in the table
+     
     for (int i = 0; i < rowCount; i++) {
-        int id = (int) model.getValueAt(i, 0); // Assuming ID is in the first column
+        int id = (int) model.getValueAt(i, 0); 
         String checkIn = (String) model.getValueAt(i, 1);
         String time = (String) model.getValueAt(i, 2);
         String customerName = (String) model.getValueAt(i, 3);
         String serviceRendered = (String) model.getValueAt(i, 4);
         String price = (String) model.getValueAt(i, 5);
         String employeeAssigned = (String) model.getValueAt(i, 6);
-        
-        // Prepare the update statement
+      
         PreparedStatement pst = sql.prepareStatement("UPDATE workjob SET check_in = ?, Time = ?, Customer_name = ?, Service_rendered = ?, Price = ?, Employee_Assigned = ? WHERE id = ?");
         
         pst.setString(1, checkIn);
@@ -195,25 +184,25 @@ try {
         pst.setString(6, employeeAssigned);
         pst.setInt(7, id);
         
-        // Execute the update statement
+       
         pst.executeUpdate();
         
-        // Close the PreparedStatement
+        
         pst.close();
     }
     
-    // Close the Connection
+   
     sql.close();
     
-    // Show a message dialog after successfully updating the database
+    
     JOptionPane.showMessageDialog(this, "Records updated successfully");
     
 } catch (ClassNotFoundException ex) {
     JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace(); // Print stack trace for debugging
+    ex.printStackTrace(); 
 } catch (SQLException ex) {
     JOptionPane.showMessageDialog(this, "Error updating records: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace(); // Print stack trace for debugging
+    ex.printStackTrace(); 
 }
 
 

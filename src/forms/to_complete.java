@@ -42,7 +42,9 @@ public void UpdateDb () {
         sql = DriverManager.getConnection(dataconn,username,password);
         pst1 = sql.prepareStatement("select * from complete");
         rs = pst1.executeQuery();
+        
         ResultSetMetaData stdata = rs.getMetaData();
+        
         q = stdata.getColumnCount();
         DefaultTableModel RecordTable = (DefaultTableModel)completed_table.getModel();
                 RecordTable.setRowCount(0);
@@ -76,7 +78,9 @@ public void UpdateDb1 () {
         
         pst = sql.prepareStatement("select * from history");
         rs = pst.executeQuery();
+        
         ResultSetMetaData stdata = rs.getMetaData();
+        
         q = stdata.getColumnCount();
         DefaultTableModel RecordTable = (DefaultTableModel)history_table.getModel();
                 RecordTable.setRowCount(0);

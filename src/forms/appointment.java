@@ -4,8 +4,6 @@
  */
 package forms;
 
-import cell.TableActionCellRender;
-import cell.CellEditor;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
@@ -336,12 +334,9 @@ public class appointment extends javax.swing.JPanel {
             if (selectedRow != -1) {
                 try {
                     DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
-                    // Get the ID
-                    int id = Integer.parseInt(recordTable.getValueAt(selectedRow, 0).toString());
-                    
                    
-                    
-                    // Populate text fields with data from the selected row
+                    int id = Integer.parseInt(recordTable.getValueAt(selectedRow, 0).toString());
+
                     txtCheckin2.setText(recordTable.getValueAt(selectedRow, 1).toString());
                     txtTime2.setText(recordTable.getValueAt(selectedRow, 2).toString());
                     txtcstname2.setText(recordTable.getValueAt(selectedRow, 3).toString());

@@ -18,8 +18,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -214,8 +212,8 @@ try {
     ResultSet generatedKeys = pst.getGeneratedKeys();
     int generatedId;
     if (generatedKeys.next()) {
-        generatedId = generatedKeys.getInt(1); // Assuming the ID column is the first column
-        // Now you have the generated ID, you can use it as needed
+        generatedId = generatedKeys.getInt(1); 
+        
     } else {
         throw new SQLException("Insertion failed, no ID obtained.");
     }
@@ -223,7 +221,7 @@ try {
     JOptionPane.showMessageDialog(this, "Record Added");
     UpdateDb();
 
-    // Clear input fields
+   
     txtCheckin.setText("");
     txtTime.setText("");
     txtcstname.setText("");
@@ -232,7 +230,7 @@ try {
     txtea.setText("");
     dispose();
 
-    // Adding the new record to the pending_table
+    
     Object[] row = {generatedId, name, work, assignedEmployee, serviceRendered, price, employee};
     recordTable.addRow(row);
 
@@ -325,7 +323,5 @@ try {
     public static final javax.swing.JTextField txtsr = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
 
-    private int getId() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 }
