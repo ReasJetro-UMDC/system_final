@@ -44,36 +44,30 @@ public class panelAction extends javax.swing.JPanel {
         initComponents();
     }
  public void UpdateDb() {
-    try {
+     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         sql = DriverManager.getConnection(dataconn, username, password);
         pst = sql.prepareStatement("SELECT * FROM workjob");
         rs = pst.executeQuery();
         
-        ResultSetMetaData stdata = rs.getMetaData();
+        DefaultTableModel RecordTable = (DefaultTableModel) pending_table.getModel();
+        RecordTable.setRowCount(0); 
         
-        q = stdata.getColumnCount();
-        
-         DefaultTableModel RecordTable = (DefaultTableModel) pending_table.getModel();
-         RecordTable.setRowCount(0);
-         
         while (rs.next()) {
             
-            Vector<String> columnData = new Vector<>();
-            for ( i = 1; i <= q; i++) { 
-                columnData.add(rs.getString("id"));
-                columnData.add(rs.getString("check_in"));
-                columnData.add(rs.getString("Time"));
-                columnData.add(rs.getString("Customer_name"));
-                columnData.add(rs.getString("Service_rendered"));
-                columnData.add(rs.getString("Price"));
-                columnData.add(rs.getString("Employee_Assigned"));
-            }
-            RecordTable.addRow(columnData);
+            Vector<Object> rowData = new Vector<>();
+            rowData.add(rs.getInt("id"));
+            rowData.add(rs.getString("check_in"));
+            rowData.add(rs.getString("Time"));
+            rowData.add(rs.getString("Customer_name"));
+            rowData.add(rs.getString("Service_rendered"));
+            rowData.add(rs.getString("Price"));
+            rowData.add(rs.getString("Employee_Assigned"));
+            RecordTable.addRow(rowData); 
         }
-       
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e.getMessage()); // Displaying error message
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        e.printStackTrace(); 
     }
 }
  /**
@@ -109,101 +103,126 @@ public class panelAction extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(TAB_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TAB_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TAB_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TAB_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TAB_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TAB_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void TAB_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAB_deleteActionPerformed
 
  
-    DefaultTableModel recordTable = (DefaultTableModel)pending_table.getModel();
-    int selectedRows = pending_table.getSelectedRow();
- 
-    try {
-       
-        id = Integer.parseInt(recordTable.getValueAt(selectedRows, 0).toString());
+   DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
+int selectedRows = pending_table.getSelectedRow();
 
-        
-        deleteitem = JOptionPane.showConfirmDialog(null, "Confirm if you want to delete item", "warning",JOptionPane.YES_NO_OPTION);
-        if (deleteitem == JOptionPane.YES_OPTION) {
+try {
+    if (selectedRows != -1) { 
+        int id = Integer.parseInt(recordTable.getValueAt(selectedRows, 0).toString());
+
+        int deleteItem = JOptionPane.showConfirmDialog(null, "Confirm if you want to delete item", "Warning", JOptionPane.YES_NO_OPTION);
+        if (deleteItem == JOptionPane.YES_OPTION) {
             
-           Class.forName("com.mysql.cj.jdbc.Driver");
-        sql = DriverManager.getConnection(dataconn, username, password); 
-        pst = sql.prepareStatement("delete from workjob where id =? ");
-        
-        pst.setInt(1, id);
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(this, "record deleted");
-        UpdateDb();
-        txtCheckin.setText("");
-        txtTime.setText("");
-        txtcstname.setText("");
-        txtsr.setText("");
-        txtprice.setText("");
-        txtea.setText("");
-        txtprice.requestFocus();
-        
+            try (Connection connection = DriverManager.getConnection(dataconn, username, password)) {
+                
+                String deleteQuery = "DELETE FROM workjob WHERE id = ?";
+                try (PreparedStatement pst = connection.prepareStatement(deleteQuery)) {
+                    pst.setInt(1, id);
+                    int rowsAffected = pst.executeUpdate();
+                    if (rowsAffected > 0) {
+                        JOptionPane.showMessageDialog(this, "Record deleted");
+                        UpdateDb(); 
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No record with ID " + id + " found.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
         }
-        
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a row to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
     }
-   catch (ClassNotFoundException ex) {
-       java.util.logging.Logger.getLogger(panelAction.class.getName()).log(java.util.logging.Level.SEVERE,null,ex);
-   }
- catch (Exception ex) {
+} catch (SQLException ex) {
+    JOptionPane.showMessageDialog(this, "SQL Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+    ex.printStackTrace(); 
+} catch (NumberFormatException ex) {
+    JOptionPane.showMessageDialog(this, "Invalid ID format.", "ERROR", JOptionPane.ERROR_MESSAGE);
+} catch (Exception ex) {
     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace();
+    ex.printStackTrace(); 
 }
+
+
 
     }//GEN-LAST:event_TAB_deleteActionPerformed
 
     private void TAB_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAB_editActionPerformed
-       try {
-    DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
-    int selectedRow = pending_table.getSelectedRow();
+       
+   // Define a method to update the pending_table
+
+    try {
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    Connection sql = DriverManager.getConnection(dataconn, username, password);
     
-    if (selectedRow != -1) { 
-        int id = Integer.parseInt(recordTable.getValueAt(selectedRow, 0).toString());
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection sql = DriverManager.getConnection(dataconn, username, password);
+    DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
+    int rowCount = model.getRowCount();
+    
+    // Iterate over each row in the table
+    for (int i = 0; i < rowCount; i++) {
+        int id = (int) model.getValueAt(i, 0); // Assuming ID is in the first column
+        String checkIn = (String) model.getValueAt(i, 1);
+        String time = (String) model.getValueAt(i, 2);
+        String customerName = (String) model.getValueAt(i, 3);
+        String serviceRendered = (String) model.getValueAt(i, 4);
+        String price = (String) model.getValueAt(i, 5);
+        String employeeAssigned = (String) model.getValueAt(i, 6);
+        
+        // Prepare the update statement
         PreparedStatement pst = sql.prepareStatement("UPDATE workjob SET check_in = ?, Time = ?, Customer_name = ?, Service_rendered = ?, Price = ?, Employee_Assigned = ? WHERE id = ?");
         
-        pst.setString(1, txtCheckin.getText());
-        pst.setString(2, txtTime.getText());
-        pst.setString(3, txtcstname.getText());
-        pst.setString(4, txtsr.getText());
-        pst.setString(5, txtprice.getText());
-        pst.setString(6, txtea.getText());  
+        pst.setString(1, checkIn);
+        pst.setString(2, time);
+        pst.setString(3, customerName);
+        pst.setString(4, serviceRendered);
+        pst.setString(5, price);
+        pst.setString(6, employeeAssigned);
         pst.setInt(7, id);
-
-        int rowsAffected = pst.executeUpdate();
-        if (rowsAffected > 0) {
-            JOptionPane.showMessageDialog(this, "Record Updated");
-            recordTable.setRowCount(0);
-            UpdateDb(); 
-        } else {
-            JOptionPane.showMessageDialog(this, "No record was updated.", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
         
+        // Execute the update statement
+        pst.executeUpdate();
+        
+        // Close the PreparedStatement
         pst.close();
-        sql.close();
-    } else {
-        JOptionPane.showMessageDialog(this, "Please select a row to update.", "Warning", JOptionPane.WARNING_MESSAGE);
     }
-} catch (ClassNotFoundException | SQLException | NumberFormatException ex) {
-    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+    
+    // Close the Connection
+    sql.close();
+    
+    // Show a message dialog after successfully updating the database
+    JOptionPane.showMessageDialog(this, "Records updated successfully");
+    
+} catch (ClassNotFoundException ex) {
+    JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
+    ex.printStackTrace(); // Print stack trace for debugging
+} catch (SQLException ex) {
+    JOptionPane.showMessageDialog(this, "Error updating records: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     ex.printStackTrace(); // Print stack trace for debugging
 }
+
+
+
+
+
+
+
+
     }//GEN-LAST:event_TAB_editActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

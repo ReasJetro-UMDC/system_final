@@ -18,6 +18,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -35,7 +37,7 @@ public class add_appointment extends javax.swing.JFrame {
     Connection sql = null;
     PreparedStatement pst  = null;
     ResultSet rs = null;
-    int q, i;
+    int q, i, id;
    
      DefaultTableModel model;
    
@@ -178,45 +180,72 @@ public class add_appointment extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void doneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneActionPerformed
-        try {
+ DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
+try {
     Class.forName("com.mysql.cj.jdbc.Driver");
-     sql = DriverManager.getConnection(dataconn, username, password);
-     pst = sql.prepareStatement("INSERT INTO workjob (check_in, Time, Customer_name, Service_rendered,Price,Employee_Assigned) VALUES (?,?,?,?,?,?) ");
-      
+    sql = DriverManager.getConnection(dataconn, username, password);
+    pst = sql.prepareStatement("INSERT INTO workjob (check_in, Time, Customer_name, Service_rendered, Price, Employee_Assigned) VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+
     String name = txtCheckin.getText();
     String work = txtTime.getText();
     String assignedEmployee = txtcstname.getText();
     String serviceRendered = txtsr.getText();
     String price = txtprice.getText();
     String employee = txtea.getText();
-     
-    if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
-       
+
+    if(name.isEmpty() || work.isEmpty() || assignedEmployee.isEmpty() || serviceRendered.isEmpty() || price.isEmpty() || employee.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
-    
+
     pst.setString(1, name);
     pst.setString(2, work);
     pst.setString(3, assignedEmployee);
     pst.setString(4, serviceRendered);
     pst.setString(5, price);
     pst.setString(6, employee);
-    
-    pst.executeUpdate();
-    
+
+    int affectedRows = pst.executeUpdate();
+
+    if (affectedRows == 0) {
+        throw new SQLException("Insertion failed, no rows affected.");
+    }
+
+    ResultSet generatedKeys = pst.getGeneratedKeys();
+    int generatedId;
+    if (generatedKeys.next()) {
+        generatedId = generatedKeys.getInt(1); // Assuming the ID column is the first column
+        // Now you have the generated ID, you can use it as needed
+    } else {
+        throw new SQLException("Insertion failed, no ID obtained.");
+    }
+
     JOptionPane.showMessageDialog(this, "Record Added");
     UpdateDb();
-    
+
+    // Clear input fields
+    txtCheckin.setText("");
+    txtTime.setText("");
+    txtcstname.setText("");
+    txtsr.setText("");
+    txtprice.setText("");
+    txtea.setText("");
     dispose();
-          
-} catch (ClassNotFoundException ex) { 
-            
-    JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
-} catch (SQLException ex) { 
-            
-    JOptionPane.showMessageDialog(this, "Error inserting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+    // Adding the new record to the pending_table
+    Object[] row = {generatedId, name, work, assignedEmployee, serviceRendered, price, employee};
+    recordTable.addRow(row);
+
+} catch (ClassNotFoundException | SQLException ex) {
+    ex.printStackTrace();
+    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 }
+
+
+
+
+
+
     }//GEN-LAST:event_doneActionPerformed
  // for time
     Timer t;
@@ -239,7 +268,7 @@ public class add_appointment extends javax.swing.JFrame {
     //for date
     public void date(){
         Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YY");
         
         String dd = sdf.format(d);
         txtCheckin.setText(dd);
@@ -295,4 +324,8 @@ public class add_appointment extends javax.swing.JFrame {
     public static final javax.swing.JTextField txtprice = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtsr = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
+
+    private int getId() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

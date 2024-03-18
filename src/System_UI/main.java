@@ -2,18 +2,37 @@ package System_UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import forms.appointment;
+import static forms.appointment.pending_table;
 import forms.complete;
 import forms.dashboard;
+import static forms.dashboard.ongoing_table1;
+import static forms.dashboard.pending_table1;
 import forms.history;
 import forms.revenue;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class main extends javax.swing.JFrame {
-
+private static final String username = "root" ;
+    private static final String password = "1234" ;
+    private static final String dataconn = "jdbc:mysql://127.0.0.1:3306/workjob" ; 
+   
+    Connection sql = null;
+    PreparedStatement pst,pst1 = null;
+    ResultSet rs = null;
+    int q, i;
+   
+     DefaultTableModel model;
     public main() {
         initComponents();
         setBackground(new Color(0,0,0,0));
@@ -26,6 +45,68 @@ public class main extends javax.swing.JFrame {
         form_frames.setLayout(new BorderLayout());
         
     }
+   public void UpdateDb() {
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection sql = DriverManager.getConnection(dataconn, username, password);
+        PreparedStatement pst = sql.prepareStatement("select * from workjob");
+        ResultSet rs = pst.executeQuery();
+
+        DefaultTableModel recordTable = (DefaultTableModel) pending_table1.getModel();
+        recordTable.setRowCount(0); 
+
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        while (rs.next()) {
+            Vector<Object> rowData = new Vector<>();
+
+           
+            for (int i = 1; i <= columnCount; i++) {
+                rowData.add(rs.getObject(i)); 
+            }
+
+            recordTable.addRow(rowData);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+   public void UpdateDb1() {
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        sql = DriverManager.getConnection(dataconn, username, password);
+        pst1 = sql.prepareStatement("select * from ongoing_table");
+        rs = pst1.executeQuery();
+
+        DefaultTableModel recordTable = (DefaultTableModel) ongoing_table1.getModel();
+        recordTable.setRowCount(0); 
+
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        while (rs.next()) {
+            Vector rowData = new Vector();
+
+           
+            for (int i = 1; i <= columnCount; i++) {
+                rowData.add(rs.getString(i)); 
+            }
+            recordTable.addRow(rowData);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        
+        try {
+            if (rs != null) rs.close();
+            if (pst1 != null) pst1.close();
+            if (sql != null) sql.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
     private void forms(Component com){
         
         
@@ -273,7 +354,7 @@ public class main extends javax.swing.JFrame {
             }
         });
     }
-     PreparedStatement pst =null;
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Company_nameframe;

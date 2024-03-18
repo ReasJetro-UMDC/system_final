@@ -249,4 +249,8 @@ public class to_ongoing extends javax.swing.JFrame {
     public static final javax.swing.JTextField txtsr2 = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
 
+    void setId(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

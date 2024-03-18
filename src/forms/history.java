@@ -138,6 +138,12 @@ private static final String username = "root" ;
             }
         });
 
+        date_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                date_searchKeyReleased(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("HISTORY");
@@ -216,6 +222,12 @@ private static final String username = "root" ;
          
         
     }//GEN-LAST:event_history_tableMouseClicked
+
+    private void date_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_date_searchKeyReleased
+        
+        String searchString = search_history.getText();
+        search(searchString);
+    }//GEN-LAST:event_date_searchKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
