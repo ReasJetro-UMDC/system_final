@@ -4,6 +4,12 @@
  */
 package forms;
 
+import static forms.add_appointment.txtCheckin;
+import static forms.add_appointment.txtTime;
+import static forms.add_appointment.txtcstname;
+import static forms.add_appointment.txtea;
+import static forms.add_appointment.txtprice;
+import static forms.add_appointment.txtsr;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
@@ -29,7 +35,7 @@ public class appointment extends javax.swing.JPanel {
     public appointment() {
         initComponents();
    
-        
+        UpdateDb();
 
     }
      private static final String username = "root" ;
@@ -48,43 +54,20 @@ public class appointment extends javax.swing.JPanel {
         revalidate();
     }
     
-    public void UpdateDb() {
-     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        sql = DriverManager.getConnection(dataconn, username, password);
-        pst = sql.prepareStatement("SELECT * FROM workjob");
-        rs = pst.executeQuery();
-        
-        DefaultTableModel RecordTable = (DefaultTableModel) pending_table.getModel();
-        RecordTable.setRowCount(0); 
-        
-        while (rs.next()) {
-            
-            Vector<Object> rowData = new Vector<>();
-            rowData.add(rs.getInt("id"));
-            rowData.add(rs.getString("check_in"));
-            rowData.add(rs.getString("Time"));
-            rowData.add(rs.getString("Customer_name"));
-            rowData.add(rs.getString("Service_rendered"));
-            rowData.add(rs.getString("Price"));
-            rowData.add(rs.getString("Employee_Assigned"));
-            RecordTable.addRow(rowData); 
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e.getMessage());
-        e.printStackTrace(); 
-    }
-}
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         pending_panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jButton2 = new javax.swing.JButton();
-        panelAction1 = new cell.panelAction();
+        panelAction2 = new cell.panelAction();
         ongoing_panel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -95,6 +78,12 @@ public class appointment extends javax.swing.JPanel {
         add_button = new javax.swing.JButton();
         add_panel = new javax.swing.JPanel();
         time_panel1 = new other_forms.time_panel();
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
 
         setBackground(new java.awt.Color(204, 204, 204));
         setForeground(new java.awt.Color(204, 204, 204));
@@ -140,23 +129,24 @@ public class appointment extends javax.swing.JPanel {
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pending_panelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelAction1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelAction2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addGap(16, 16, 16))
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
         );
         pending_panelLayout.setVerticalGroup(
             pending_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pending_panelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pending_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(panelAction1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(panelAction2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         ongoing_panel.setBackground(new java.awt.Color(255, 255, 255));
@@ -307,14 +297,40 @@ public class appointment extends javax.swing.JPanel {
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(add_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pending_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
-                .addGap(15, 15, 15)
-                .addComponent(ongoing_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                .addGap(15, 15, 15))
+                    .addComponent(add_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                    .addComponent(pending_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(ongoing_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    private void UpdateDb() {
+     try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        sql = DriverManager.getConnection(dataconn, username, password);
+        pst = sql.prepareStatement("SELECT * FROM workjob");
+        rs = pst.executeQuery();
+        
+        DefaultTableModel RecordTable = (DefaultTableModel) pending_table.getModel();
+        RecordTable.setRowCount(0); 
+        
+        while (rs.next()) {
+            
+            Vector<Object> rowData = new Vector<>();
+            rowData.add(rs.getInt("id"));
+            rowData.add(rs.getString("check_in"));
+            rowData.add(rs.getString("Time"));
+            rowData.add(rs.getString("Customer_name"));
+            rowData.add(rs.getString("Service_rendered"));
+            rowData.add(rs.getString("Price"));
+            rowData.add(rs.getString("Employee_Assigned"));
+            RecordTable.addRow(rowData); 
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        e.printStackTrace(); 
+    }
+}
         
     private void add_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_buttonActionPerformed
        add_appointment appointment = new add_appointment();
@@ -337,12 +353,12 @@ public class appointment extends javax.swing.JPanel {
                    
                     int id = Integer.parseInt(recordTable.getValueAt(selectedRow, 0).toString());
 
-                    txtCheckin2.setText(recordTable.getValueAt(selectedRow, 1).toString());
-                    txtTime2.setText(recordTable.getValueAt(selectedRow, 2).toString());
-                    txtcstname2.setText(recordTable.getValueAt(selectedRow, 3).toString());
-                    txtsr2.setText(recordTable.getValueAt(selectedRow, 4).toString());
-                    txtprice2.setText(recordTable.getValueAt(selectedRow, 5).toString());
-                    txtea2.setText(recordTable.getValueAt(selectedRow, 6).toString());
+                    txtCheckin.setText(recordTable.getValueAt(selectedRow, 1).toString());
+                    txtTime.setText(recordTable.getValueAt(selectedRow, 2).toString());
+                    txtcstname.setText(recordTable.getValueAt(selectedRow, 3).toString());
+                    txtsr.setText(recordTable.getValueAt(selectedRow, 4).toString());
+                    txtprice.setText(recordTable.getValueAt(selectedRow, 5).toString());
+                    txtea.setText(recordTable.getValueAt(selectedRow, 6).toString());
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
@@ -475,13 +491,16 @@ public static void AddRowToJTable3(Object[]dataRow) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel ongoing_panel;
     public static final javax.swing.JTable ongoing_table = new javax.swing.JTable();
-    private cell.panelAction panelAction1;
+    private cell.panelAction panelAction2;
     private javax.swing.JPanel pending_panel;
     public static final javax.swing.JTable pending_table = new javax.swing.JTable();
     private other_forms.time_panel time_panel1;

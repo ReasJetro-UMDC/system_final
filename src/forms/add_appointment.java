@@ -64,7 +64,8 @@ public class add_appointment extends javax.swing.JFrame {
                 Vector<Object> columnData1 = new Vector<>();
                 Vector<Object> columnData2 = new Vector<>();
                 Vector<Object> columnData3 = new Vector<>();
-
+                
+                
                 columnData1.add(rs.getString("check_in"));
                 columnData1.add(rs.getString("Time"));
                 columnData1.add(rs.getString("Customer_name"));
@@ -176,14 +177,40 @@ public class add_appointment extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+private void UpdateDb1() {
+     try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        sql = DriverManager.getConnection(dataconn, username, password);
+        pst = sql.prepareStatement("SELECT * FROM workjob");
+        rs = pst.executeQuery();
+        
+        DefaultTableModel RecordTable = (DefaultTableModel) pending_table.getModel();
+        RecordTable.setRowCount(0); 
+        
+        while (rs.next()) {
+            
+            Vector<Object> rowData = new Vector<>();
+            rowData.add(rs.getInt("id"));
+            rowData.add(rs.getString("check_in"));
+            rowData.add(rs.getString("Time"));
+            rowData.add(rs.getString("Customer_name"));
+            rowData.add(rs.getString("Service_rendered"));
+            rowData.add(rs.getString("Price"));
+            rowData.add(rs.getString("Employee_Assigned"));
+            RecordTable.addRow(rowData); 
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        e.printStackTrace(); 
+    }
+}
     private void doneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneActionPerformed
- DefaultTableModel recordTable = (DefaultTableModel) pending_table.getModel();
-try {
+ 
+ try {
     Class.forName("com.mysql.cj.jdbc.Driver");
-    sql = DriverManager.getConnection(dataconn, username, password);
-    pst = sql.prepareStatement("INSERT INTO workjob (check_in, Time, Customer_name, Service_rendered, Price, Employee_Assigned) VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-
+    Connection sql = DriverManager.getConnection(dataconn, username, password);
+    PreparedStatement pst = sql.prepareStatement("INSERT INTO workjob (check_in, Time, Customer_name, Service_rendered,Price,Employee_Assigned) VALUES (?,?,?,?,?,?) ");
+    
     String name = txtCheckin.getText();
     String work = txtTime.getText();
     String assignedEmployee = txtcstname.getText();
@@ -191,59 +218,34 @@ try {
     String price = txtprice.getText();
     String employee = txtea.getText();
 
-    if(name.isEmpty() || work.isEmpty() || assignedEmployee.isEmpty() || serviceRendered.isEmpty() || price.isEmpty() || employee.isEmpty()) {
+    if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
+       
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
-
+    
     pst.setString(1, name);
     pst.setString(2, work);
     pst.setString(3, assignedEmployee);
     pst.setString(4, serviceRendered);
     pst.setString(5, price);
     pst.setString(6, employee);
-
-    int affectedRows = pst.executeUpdate();
-
-    if (affectedRows == 0) {
-        throw new SQLException("Insertion failed, no rows affected.");
-    }
-
-    ResultSet generatedKeys = pst.getGeneratedKeys();
-    int generatedId;
-    if (generatedKeys.next()) {
-        generatedId = generatedKeys.getInt(1); 
-        
-    } else {
-        throw new SQLException("Insertion failed, no ID obtained.");
-    }
-
-    JOptionPane.showMessageDialog(this, "Record Added");
-    UpdateDb();
-
-   
-    txtCheckin.setText("");
-    txtTime.setText("");
-    txtcstname.setText("");
-    txtsr.setText("");
-    txtprice.setText("");
-    txtea.setText("");
-    dispose();
-
     
-    Object[] row = {generatedId, name, work, assignedEmployee, serviceRendered, price, employee};
-    recordTable.addRow(row);
-
-} catch (ClassNotFoundException | SQLException ex) {
-    ex.printStackTrace();
-    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-}
-
-
-
-
-
-
+    pst.executeUpdate();
+    JOptionPane.showMessageDialog(this, "Record Added");
+    
+    UpdateDb();
+    UpdateDb1();
+    
+    dispose();
+          
+} catch (ClassNotFoundException ex) {
+    ex.printStackTrace(); 
+    JOptionPane.showMessageDialog(this, "Database driver not found", "Error", JOptionPane.ERROR_MESSAGE);
+} catch (SQLException ex) {
+    ex.printStackTrace(); 
+    JOptionPane.showMessageDialog(this, "Error inserting record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}  
     }//GEN-LAST:event_doneActionPerformed
  // for time
     Timer t;

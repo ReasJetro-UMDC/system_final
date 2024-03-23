@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package forms;
+import static forms.to_revenue.customer_rev;
+import static forms.to_revenue.date_rev;
+import static forms.to_revenue.total_rev;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +15,8 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -37,7 +42,7 @@ private static final String username = "root" ;
      */
     public complete() {
         initComponents();
-        
+        UpdateDb1();
     }
  public void UpdateDb () {
     try {
@@ -106,7 +111,7 @@ private static final String username = "root" ;
 
             },
             new String [] {
-                "Check In", "Time", "Name", "Works", "Price", "Employee Assigned"
+                "ID", "Check In", "Time", "Name", "Works", "Price", "Employee Assigned"
             }
         ));
         completed_table.setRowHeight(40);
@@ -200,7 +205,33 @@ private static final String username = "root" ;
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
+private void UpdateDb1() {
+     try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        sql = DriverManager.getConnection(dataconn, username, password);
+        pst = sql.prepareStatement("SELECT * FROM complete");
+        rs = pst.executeQuery();
+        
+        DefaultTableModel RecordTable = (DefaultTableModel) completed_table.getModel();
+        RecordTable.setRowCount(0); 
+        
+        while (rs.next()) {
+            
+            Vector<Object> rowData = new Vector<>();
+            rowData.add(rs.getInt("idcomplete"));
+            rowData.add(rs.getString("Check_in_complete"));
+            rowData.add(rs.getString("time_complete"));
+            rowData.add(rs.getString("Costumer_Name_complete"));
+            rowData.add(rs.getString("Service_Rendered_complete"));
+            rowData.add(rs.getString("price_complete"));
+            rowData.add(rs.getString("Emplooyee_Assigned_complete"));
+            RecordTable.addRow(rowData); 
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+        e.printStackTrace(); 
+    }
+}
     private void search_completeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_completeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_search_completeActionPerformed
@@ -211,34 +242,40 @@ private static final String username = "root" ;
     }//GEN-LAST:event_completed_tableMouseClicked
 
     private void search_completeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_completeKeyReleased
-    String searchString = search_complete.getText();
-        search(searchString);        // TODO add your handling code here:
+        
+        String searchString = search_complete.getText();
+        search(searchString);  
+         
     }//GEN-LAST:event_search_completeKeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
  try {
-         int index = completed_table.getSelectedRow();
-          TableModel model = completed_table.getModel();
-          
-          String date = model.getValueAt(index, 0).toString();
-          String customer = model.getValueAt(index,2).toString();
-          String total = model.getValueAt(index, 4).toString();
-          
-           
+    int index = completed_table.getSelectedRow();
+    if (index != -1) { // Check if a row is selected
+        TableModel model = completed_table.getModel();
+
+        String date = model.getValueAt(index, 0).toString();
+        String customer = model.getValueAt(index, 2).toString();
+        String total = model.getValueAt(index, 4).toString();
+
         to_revenue revenuetb = new to_revenue();
         revenuetb.setVisible(true);
         revenuetb.pack();
-        revenuetb.setLocationRelativeTo(revenuetb);
+        revenuetb.setLocationRelativeTo(null); // Center the frame on screen
         revenuetb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
+
+        // Set the values to the text fields in to_revenue frame
         revenuetb.date_rev.setText(date);
         revenuetb.customer_rev.setText(customer);
         revenuetb.total_rev.setText(total);
-        
-        
-        } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }        
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select a row.");
+    }
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    e.printStackTrace();
+}
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

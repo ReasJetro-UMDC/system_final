@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.text.SimpleDateFormat;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -37,7 +36,7 @@ private static final String username = "root" ;
     public history() {
         initComponents();
         
-       
+       UpdateDb1();
       }
     
     public void UpdateDb1 () {

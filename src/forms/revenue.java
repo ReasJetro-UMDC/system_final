@@ -24,6 +24,7 @@ public class revenue extends javax.swing.JPanel {
      */
     public revenue() {
         initComponents();
+        UpdateDb3 ();
     }
 private static final String username = "root" ;
     private static final String password = "1234" ;
