@@ -49,6 +49,7 @@ public class to_ongoing extends javax.swing.JFrame {
             
             for ( i = 1; i < q; i++)
              {  
+                 columnData.add(rs.getString("idongoing_table"));
                  columnData.add(rs.getString("ongoing_checkin"));
                  columnData.add(rs.getString("ongoing_time"));
                  columnData.add(rs.getString("ongoing_name"));
@@ -93,10 +94,10 @@ public class to_ongoing extends javax.swing.JFrame {
         jLabel1.setText("Checked in");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
         jPanel1.add(txtCheckin2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 130, 30));
-        jPanel1.add(txtTime2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 130, 30));
+        jPanel1.add(txtTime2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 130, 30));
 
         jLabel2.setText("Time");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, -1, -1));
 
         txtcstname2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,10 +108,10 @@ public class to_ongoing extends javax.swing.JFrame {
 
         jLabel3.setText("Customer Name");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
-        jPanel1.add(txtsr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 130, 30));
+        jPanel1.add(txtsr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 130, 30));
 
         jLabel4.setText("Service Rendered");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
 
         done.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         done.setText("DONE");
@@ -127,18 +128,21 @@ public class to_ongoing extends javax.swing.JFrame {
             }
         });
         jPanel1.add(txtprice2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 130, 30));
-        jPanel1.add(txtea2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, 130, 30));
 
         jLabel5.setText("Price");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
 
         jLabel6.setText("Employee Assigned");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("To Ongoing");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 12, 260, 30));
+
+        employ2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jetro", "Jake", "Clarisse", "Eliza" }));
+        employ2.setSelectedItem(null);
+        jPanel1.add(employ2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, 130, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 310));
 
@@ -162,7 +166,7 @@ public class to_ongoing extends javax.swing.JFrame {
     String assignedEmployee = txtcstname2.getText();
     String serviceRendered = txtsr2.getText();
     String price = txtprice2.getText();
-    String employee = txtea2.getText();
+    String employee = (String) employ2.getSelectedItem();
 
     if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
        
@@ -233,6 +237,7 @@ public class to_ongoing extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton done;
+    public static final javax.swing.JComboBox<String> employ2 = new javax.swing.JComboBox<>();
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -244,7 +249,6 @@ public class to_ongoing extends javax.swing.JFrame {
     public static final javax.swing.JTextField txtCheckin2 = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtTime2 = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtcstname2 = new javax.swing.JTextField();
-    public static final javax.swing.JTextField txtea2 = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtprice2 = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtsr2 = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables

@@ -3,15 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package forms;
-import static forms.to_revenue.customer_rev;
-import static forms.to_revenue.date_rev;
-import static forms.to_revenue.total_rev;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -33,6 +34,7 @@ private static final String username = "root" ;
     Connection sql = null;
     PreparedStatement pst  = null;
     ResultSet rs = null;
+    Statement st = null;
     int q, i;
     
     DefaultTableModel model;
@@ -111,9 +113,17 @@ private static final String username = "root" ;
 
             },
             new String [] {
-                "ID", "Check In", "Time", "Name", "Works", "Price", "Employee Assigned"
+                "Check In", "Time", "Name", "Works", "Price", "Employee Assigned"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         completed_table.setRowHeight(40);
         completed_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -138,7 +148,7 @@ private static final String username = "root" ;
         jLabel1.setText("COMPLETE");
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("ADD TO REVENUE");
+        jButton1.setText("RESET");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -218,7 +228,7 @@ private void UpdateDb1() {
         while (rs.next()) {
             
             Vector<Object> rowData = new Vector<>();
-            rowData.add(rs.getInt("idcomplete"));
+            //rowData.add(rs.getInt("idcomplete"));
             rowData.add(rs.getString("Check_in_complete"));
             rowData.add(rs.getString("time_complete"));
             rowData.add(rs.getString("Costumer_Name_complete"));
@@ -249,32 +259,23 @@ private void UpdateDb1() {
     }//GEN-LAST:event_search_completeKeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- try {
-    int index = completed_table.getSelectedRow();
-    if (index != -1) { // Check if a row is selected
-        TableModel model = completed_table.getModel();
-
-        String date = model.getValueAt(index, 0).toString();
-        String customer = model.getValueAt(index, 2).toString();
-        String total = model.getValueAt(index, 4).toString();
-
-        to_revenue revenuetb = new to_revenue();
-        revenuetb.setVisible(true);
-        revenuetb.pack();
-        revenuetb.setLocationRelativeTo(null); // Center the frame on screen
-        revenuetb.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // Set the values to the text fields in to_revenue frame
-        revenuetb.date_rev.setText(date);
-        revenuetb.customer_rev.setText(customer);
-        revenuetb.total_rev.setText(total);
-    } else {
-        JOptionPane.showMessageDialog(null, "Please select a row.");
-    }
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    e.printStackTrace();
-}
+        int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to reset this data?", "Confirm", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        
+        if(input==JOptionPane.YES_OPTION) {
+        
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                sql = DriverManager.getConnection(dataconn,username,password);
+                st = sql.createStatement();
+                st.executeUpdate("TRUNCATE TABLE complete");
+                JOptionPane.showMessageDialog(null, "table reset successfully.");
+                UpdateDb();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error truncating table: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(complete.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }         
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -31,7 +31,8 @@ public class dashboard extends javax.swing.JPanel {
     
     public dashboard() {
         initComponents();
-       
+        UpdateDb();
+        UpdateDb1();
     }
    public void UpdateDb() {
     try {
@@ -126,17 +127,18 @@ public class dashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Checked in", "Time", "Customer Name", "Service Rendered", "Price", "Employee Assigned"
+                "ID", "Checked in", "Time", "Customer Name", "Service Rendered", "Price", "Employee Assigned"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        pending_table1.setRowHeight(40);
         jScrollPane1.setViewportView(pending_table1);
 
         javax.swing.GroupLayout pending_panelLayout = new javax.swing.GroupLayout(pending_panel);
@@ -168,7 +170,7 @@ public class dashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Checked in", "Time", "Customer Name", "Service Rendered", "Employee Assigned", "Price", "Employee Assigned"
+                "ID", "Checked in", "Time", "Customer Name", "Service Rendered", "Price", "Employee Assigned"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -179,6 +181,7 @@ public class dashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        ongoing_table1.setRowHeight(40);
         jScrollPane2.setViewportView(ongoing_table1);
 
         javax.swing.GroupLayout ongoing_panelLayout = new javax.swing.GroupLayout(ongoing_panel);

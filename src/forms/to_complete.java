@@ -127,7 +127,6 @@ public void UpdateDb1 () {
         jLabel4 = new javax.swing.JLabel();
         done = new javax.swing.JButton();
         txtprice3 = new javax.swing.JTextField();
-        txtea3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -139,11 +138,17 @@ public void UpdateDb1 () {
 
         jLabel1.setText("Checked in");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+
+        txtCheckin3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCheckin3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtCheckin3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 130, 30));
-        jPanel1.add(txtTime3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 130, 30));
+        jPanel1.add(txtTime3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 130, 30));
 
         jLabel2.setText("Time");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, -1, -1));
 
         txtcstname3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,10 +159,10 @@ public void UpdateDb1 () {
 
         jLabel3.setText("Customer Name");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
-        jPanel1.add(txtsr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 130, 30));
+        jPanel1.add(txtsr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 130, 30));
 
         jLabel4.setText("Service Rendered");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, -1));
 
         done.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         done.setText("Done");
@@ -174,18 +179,21 @@ public void UpdateDb1 () {
             }
         });
         jPanel1.add(txtprice3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 130, 30));
-        jPanel1.add(txtea3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, 130, 30));
 
         jLabel5.setText("Price");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
 
         jLabel6.setText("Employee Assigned");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("To Complete");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 260, -1));
+
+        employ3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jetro", "Jake", "Clarisse", "Eliza" }));
+        employ3.setSelectedItem(null);
+        jPanel1.add(employ3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 130, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -199,9 +207,7 @@ public void UpdateDb1 () {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 310, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 6, Short.MAX_VALUE)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,7 +230,7 @@ public void UpdateDb1 () {
             String assignedEmployee = txtcstname3.getText();
             String serviceRendered = txtsr3.getText();
             String price = txtprice3.getText();
-            String employee = txtea3.getText();
+            String employee = (String) employ3.getSelectedItem();
 
             if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
 
@@ -269,6 +275,10 @@ public void UpdateDb1 () {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtprice3ActionPerformed
 
+    private void txtCheckin3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCheckin3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCheckin3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -306,6 +316,7 @@ public void UpdateDb1 () {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton done;
+    public static final javax.swing.JComboBox<String> employ3 = new javax.swing.JComboBox<>();
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -317,7 +328,6 @@ public void UpdateDb1 () {
     public static javax.swing.JTextField txtCheckin3;
     public static javax.swing.JTextField txtTime3;
     public static javax.swing.JTextField txtcstname3;
-    public static javax.swing.JTextField txtea3;
     public static javax.swing.JTextField txtprice3;
     public static javax.swing.JTextField txtsr3;
     // End of variables declaration//GEN-END:variables

@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +26,10 @@ public class revenue extends javax.swing.JPanel {
      */
     public revenue() {
         initComponents();
-        UpdateDb3 ();
+        RDC();
+        date();
+        count_row();
+        TRTXT.setText(Integer.toString(total_rev()));
     }
 private static final String username = "root" ;
     private static final String password = "1234" ;
@@ -35,28 +40,26 @@ private static final String username = "root" ;
     PreparedStatement pst  = null;
     ResultSet rs = null;
     int q, i;
-    
-    public void UpdateDb3 () {
-    try {
+        public void RDC() {
+        try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         sql = DriverManager.getConnection(dataconn,username,password);
-        pst = sql.prepareStatement("select * from revenue");
+        pst = sql.prepareStatement("select * from complete");
         rs = pst.executeQuery();
         ResultSetMetaData stdata = rs.getMetaData();
         q = stdata.getColumnCount();
-        DefaultTableModel RecordTable = (DefaultTableModel)revenue.revenue_table.getModel();
+        DefaultTableModel RecordTable = (DefaultTableModel)revenue_table.getModel();
                 RecordTable.setRowCount(0);
         while (rs.next()){
             Vector columnData = new Vector();
             
             for ( i = 1; i < q; i++)
+            
              {  
                 
-                 columnData.add(rs.getString("date_revenue"));
-                 columnData.add(rs.getString("customer_revenue"));
-                 columnData.add(rs.getString("total_revenue"));
-                
-                 
+                 columnData.add(rs.getString("Check_in_complete"));
+                 columnData.add(rs.getString("Service_Rendered_complete"));
+                 columnData.add(rs.getString("price_complete"));
             }
             RecordTable.addRow(columnData);
         }        
@@ -65,7 +68,27 @@ private static final String username = "root" ;
         JOptionPane.showMessageDialog(null, e);
     }
     
-}
+    
+    }
+    public void date(){
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YY");
+        
+        String dd = sdf.format(d);
+        DTXT.setText(dd);
+    }
+    public void count_row(){
+        int rows = revenue_table.getRowCount();
+        TWJTXT.setText(String.valueOf(rows));
+    }
+    public int total_rev(){
+       int rcount = revenue_table.getRowCount();
+       int total = 0;
+       for(int i=0;i<rcount;i++){
+           total = total + Integer.parseInt((String) revenue_table.getValueAt(i, 2));
+       }
+       return total;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,14 +98,25 @@ private static final String username = "root" ;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         revenue_table = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        DTXT = new javax.swing.JLabel();
+        Jlabel2 = new javax.swing.JLabel();
+        Jlable3 = new javax.swing.JLabel();
+        TWJTXT = new javax.swing.JLabel();
+        TRTXT = new javax.swing.JLabel();
+        referesh = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setPreferredSize(new java.awt.Dimension(940, 610));
+
+        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel3.setPreferredSize(new java.awt.Dimension(940, 610));
 
         revenue_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,7 +126,7 @@ private static final String username = "root" ;
                 {null, null, null}
             },
             new String [] {
-                "Date", "Customer", "Total Revenue"
+                "Date", "Service Rendered", "Price"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -103,69 +137,162 @@ private static final String username = "root" ;
                 return canEdit [columnIndex];
             }
         });
+        revenue_table.setRowHeight(40);
         jScrollPane1.setViewportView(revenue_table);
+
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        jLabel2.setText("Date:");
+
+        DTXT.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        DTXT.setText("0");
+
+        Jlabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        Jlabel2.setText("Total of Work-Jobs:");
+
+        Jlable3.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        Jlable3.setText("Total Revenue:");
+
+        TWJTXT.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        TWJTXT.setText("0");
+
+        TRTXT.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        TRTXT.setText("0");
+
+        referesh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        referesh.setText("REFRESH");
+        referesh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refereshActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(DTXT)
+                        .addGap(130, 130, 130)
+                        .addComponent(Jlabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TWJTXT)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Jlable3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TRTXT)
+                        .addGap(110, 110, 110))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 908, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(referesh, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(23, 23, 23)))
+                        .addGap(15, 15, 15))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(referesh, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(DTXT)
+                    .addComponent(Jlabel2)
+                    .addComponent(Jlable3)
+                    .addComponent(TWJTXT)
+                    .addComponent(TRTXT))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("REVENUE");
+        jLabel1.setText("DAILY REVENUE");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(346, 346, 346))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(320, 320, 320)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(17, 17, 17)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 940, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 610, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void refereshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refereshActionPerformed
+        RDC();
+        date();
+        count_row();
+        TRTXT.setText(Integer.toString(total_rev()));
+    }//GEN-LAST:event_refereshActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel DTXT;
+    private javax.swing.JLabel Jlabel2;
+    private javax.swing.JLabel Jlable3;
+    private javax.swing.JLabel TRTXT;
+    private javax.swing.JLabel TWJTXT;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     public static javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton referesh;
     public static javax.swing.JTable revenue_table;
     // End of variables declaration//GEN-END:variables
 }

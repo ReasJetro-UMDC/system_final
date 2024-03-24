@@ -41,7 +41,7 @@ public class add_appointment extends javax.swing.JFrame {
    
     public add_appointment() {
         initComponents();
-         time();
+        time();
         date();
     }
     public void UpdateDb() {
@@ -155,13 +155,16 @@ public class add_appointment extends javax.swing.JFrame {
             }
         });
         jPanel1.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 130, 30));
-        jPanel1.add(txtea, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, 130, 30));
 
         jLabel5.setText("Price");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, -1));
 
         jLabel6.setText("Employee Assigned");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, -1, -1));
+
+        employ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jetro", "Jake", "Clarisse", "Eliza" }));
+        employ.setSelectedItem(null);
+        jPanel1.add(employ, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, 130, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,7 +219,7 @@ private void UpdateDb1() {
     String assignedEmployee = txtcstname.getText();
     String serviceRendered = txtsr.getText();
     String price = txtprice.getText();
-    String employee = txtea.getText();
+    String employee = (String) employ.getSelectedItem();
 
     if(name == null || work == null || assignedEmployee == null || serviceRendered == null || price == null || employee == null) {
        
@@ -268,7 +271,7 @@ private void UpdateDb1() {
     //for date
     public void date(){
         Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YY");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YY");
         
         String dd = sdf.format(d);
         txtCheckin.setText(dd);
@@ -310,6 +313,7 @@ private void UpdateDb1() {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton done;
+    public static final javax.swing.JComboBox<String> employ = new javax.swing.JComboBox<>();
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -320,7 +324,6 @@ private void UpdateDb1() {
     public static final javax.swing.JTextField txtCheckin = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtTime = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtcstname = new javax.swing.JTextField();
-    public static final javax.swing.JTextField txtea = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtprice = new javax.swing.JTextField();
     public static final javax.swing.JTextField txtsr = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
